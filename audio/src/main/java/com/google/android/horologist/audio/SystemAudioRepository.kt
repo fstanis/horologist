@@ -22,8 +22,9 @@ import androidx.mediarouter.media.MediaRouteSelector
 import androidx.mediarouter.media.MediaRouter
 import androidx.mediarouter.media.MediaRouter.RouteInfo
 import com.google.android.horologist.audio.BluetoothSettings.launchBluetoothSettings
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.trySendBlocking
+import kotlinx.coroutines.flow.*
 
 /**
  * Audio Repository for identifying and controlling available audio devices in a simple manner.
@@ -54,26 +55,28 @@ public class SystemAudioRepository(
     override val available: StateFlow<List<AudioOutput>>
         get() = _available
 
-    private val callback = object : MediaRouter.Callback() {
-        override fun onRouteAdded(router: MediaRouter, route: RouteInfo) {
-            update()
-        }
+    private val mediaRouterState = callbackFlow {
+        val callback = object : MediaRouter.Callback() {
+            override fun onRouteAdded(router: MediaRouter, route: RouteInfo) {
+                mediaRouter.fixInconsistency()
+                this@callbackFlow.trySend(router.state)
+            }
 
-        override fun onRouteRemoved(router: MediaRouter, route: RouteInfo) {
-            update()
-        }
+            override fun onRouteRemoved(router: MediaRouter, route: RouteInfo) {
+                mediaRouter.fixInconsistency()
+                this@callbackFlow.trySend(router.state)
+            }
 
-        override fun onRouteSelected(router: MediaRouter, route: RouteInfo, reason: Int) {
-            update()
-        }
+            override fun onRouteSelected(router: MediaRouter, route: RouteInfo, reason: Int) {
+                mediaRouter.fixInconsistency()
+                this@callbackFlow.trySend(router.state)
+            }
 
-        override fun onRouteVolumeChanged(router: MediaRouter, route: RouteInfo) {
-            mediaRouter.fixInconsistency()
-            _volume.value = mediaRouter.volume
+            override fun onRouteVolumeChanged(router: MediaRouter, route: RouteInfo) {
+                mediaRouter.fixInconsistency()
+                this@callbackFlow.trySend(router.state)
+            }
         }
-    }
-
-    init {
         mediaRouter.addCallback(
             MediaRouteSelector.Builder()
                 .addControlCategory(MediaControlIntent.CATEGORY_LIVE_AUDIO)
@@ -81,17 +84,11 @@ public class SystemAudioRepository(
                 .build(),
             callback
         )
-        update()
-    }
-
-    private fun update() {
-        mediaRouter.fixInconsistency()
-        _available.value = mediaRouter.devices
-        _output.value = mediaRouter.output
+        send(mediaRouter.state)
+        awaitClose{mediaRouter.removeCallback(callback)}
     }
 
     override fun close() {
-        mediaRouter.removeCallback(callback)
         _output.value = AudioOutput.None
         _available.value = listOf()
     }
@@ -108,45 +105,40 @@ public class SystemAudioRepository(
             )
         }
     }
-}
 
-private fun MediaRouter.fixInconsistency() {
-    if (selectedRoute !in routes) {
-        selectRoute(defaultRoute)
-    }
-}
+    private data class MediaRouterState(
+        val volume: VolumeState,
+        val output: AudioOutput,
+        val devices: List<AudioOutput>
+    )
 
-private inline val MediaRouter.volume: VolumeState
-    get() {
-        return selectedRoute.volumeState
-    }
+    private inline val MediaRouter.state
+        get() = MediaRouterState(
+            volume = selectedRoute.let {
+                VolumeState(current = it.volume, max = it.volumeMax)
+            },
+            output = selectedRoute.device,
+            devices = routes.map { it.device }
+        )
 
-private inline val MediaRouter.output: AudioOutput
-    get() {
-        return selectedRoute.device
-    }
-
-private inline val MediaRouter.devices: List<AudioOutput>
-    get() {
-        return routes.map { it.device }
-    }
-
-private inline val RouteInfo.volumeState: VolumeState
-    get() {
-        return VolumeState(current = volume, max = volumeMax)
-    }
-
-private inline val RouteInfo.device: AudioOutput
-    get() {
-        return when {
-            isBluetooth -> {
-                AudioOutput.BluetoothHeadset(id, name)
-            }
-            isDeviceSpeaker -> {
-                AudioOutput.WatchSpeaker(id, name)
-            }
-            else -> {
-                AudioOutput.Unknown(id, name)
-            }
+    private fun MediaRouter.fixInconsistency() {
+        if (selectedRoute !in routes) {
+            selectRoute(defaultRoute)
         }
     }
+
+    private inline val RouteInfo.device: AudioOutput
+        get() {
+            return when {
+                isBluetooth -> {
+                    AudioOutput.BluetoothHeadset(id, name)
+                }
+                isDeviceSpeaker -> {
+                    AudioOutput.WatchSpeaker(id, name)
+                }
+                else -> {
+                    AudioOutput.Unknown(id, name)
+                }
+            }
+        }
+}
