@@ -24,21 +24,26 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
+import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
+import androidx.media3.common.Timeline
+import androidx.media3.common.TrackSelectionParameters
 import androidx.media3.common.util.Clock
 import androidx.media3.datasource.cache.Cache
 import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.datasource.okhttp.OkHttpDataSource
-import androidx.media3.exoplayer.DefaultLoadControl
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.exoplayer.LoadControl
-import androidx.media3.exoplayer.RenderersFactory
+import androidx.media3.exoplayer.*
 import androidx.media3.exoplayer.analytics.AnalyticsCollector
 import androidx.media3.exoplayer.analytics.DefaultAnalyticsCollector
 import androidx.media3.exoplayer.audio.DefaultAudioSink
 import androidx.media3.exoplayer.mediacodec.MediaCodecSelector
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.MediaSource
+import androidx.media3.exoplayer.source.TrackGroupArray
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
+import androidx.media3.exoplayer.trackselection.TrackSelector
+import androidx.media3.exoplayer.trackselection.TrackSelectorResult
+import androidx.media3.exoplayer.upstream.BandwidthMeter
 import androidx.media3.extractor.DefaultExtractorsFactory
 import androidx.media3.extractor.ExtractorsFactory
 import androidx.media3.session.MediaLibraryService
@@ -272,7 +277,6 @@ object PlaybackServiceModule {
                     }
                 )
             }
-
     @ServiceScoped
     @Provides
     fun audioSink(
@@ -287,11 +291,12 @@ object PlaybackServiceModule {
             settingsRepository.settingsFlow.first().offloadMode.strategy != AudioOffloadStrategy.Never
         }
 
-        return wearMedia3Factory.audioSink(
-            attemptOffload = offloadEnabled && appConfig.offloadEnabled,
-            offloadMode = if (offloadEnabled) appConfig.offloadMode else DefaultAudioSink.OFFLOAD_MODE_DISABLED,
-            audioOffloadListener = audioOffloadListener
-        ).also { audioSink ->
+        val sink = if (offloadEnabled && appConfig.offloadEnabled) {
+            wearMedia3Factory.audioSinkWithOffload(audioOffloadListener)
+        } else {
+            wearMedia3Factory.audioSink()
+        }
+        return sink.also { audioSink ->
             if (service is LifecycleOwner) {
                 service.lifecycle.addObserver(
                     object : DefaultLifecycleObserver {

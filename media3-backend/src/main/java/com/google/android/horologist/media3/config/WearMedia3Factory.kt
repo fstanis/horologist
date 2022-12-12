@@ -28,44 +28,64 @@ import androidx.media3.exoplayer.mediacodec.MediaCodecSelector
 
 @SuppressLint("UnsafeOptInUsageError")
 public open class WearMedia3Factory(private val context: Context) {
-    public fun audioSink(
-        attemptOffload: Boolean,
-        offloadMode: Int = DefaultAudioSink.OFFLOAD_MODE_ENABLED_GAPLESS_NOT_REQUIRED,
+    public fun audioSink(): DefaultAudioSink {
+        return baseAudioSinkBuilder()
+            .setOffloadMode(DefaultAudioSink.OFFLOAD_MODE_DISABLED)
+            .build()
+    }
+
+    public fun audioSinkWithOffload(
         @Suppress("UNUSED_PARAMETER") audioOffloadListener: AudioOffloadListener?
     ): DefaultAudioSink {
-        return DefaultAudioSink.Builder()
-            .setAudioCapabilities(AudioCapabilities.getCapabilities(context))
-            .setAudioProcessorChain(DefaultAudioSink.DefaultAudioProcessorChain())
+        return baseAudioSinkBuilder()
             // Expose when https://github.com/androidx/media/commit/7893531888608555fb09e77f12897752650131d5
             // is in 1.0-RC1
             // For now requires `media3.checkout=false` in local.properties
 //            .setExperimentalAudioOffloadListener(audioOffloadListener)
-            .setEnableFloatOutput(false) // default
-            .setEnableAudioTrackPlaybackParams(false) // default
-            .setOffloadMode(
-                if (attemptOffload) {
-                    offloadMode
-                } else {
-                    DefaultAudioSink.OFFLOAD_MODE_DISABLED
-                }
-            )
+            .setOffloadMode(DefaultAudioSink.OFFLOAD_MODE_ENABLED_GAPLESS_NOT_REQUIRED)
             .build()
     }
 
+    private fun baseAudioSinkBuilder() =
+        DefaultAudioSink.Builder()
+            .setAudioCapabilities(AudioCapabilities.getCapabilities(context))
+            .setAudioProcessorChain(DefaultAudioSink.DefaultAudioProcessorChain())
+            .setEnableFloatOutput(false) // default
+            .setEnableAudioTrackPlaybackParams(false) // default
+
     public fun audioOnlyRenderersFactory(
         audioSink: AudioSink,
-        mediaCodecSelector: MediaCodecSelector = MediaCodecSelector.DEFAULT
+        mediaCodecSelector: MediaCodecSelector = mediaCodecSelector()
     ): RenderersFactory =
         RenderersFactory { handler, _, audioListener, _, _ ->
-            arrayOf(
-                MediaCodecAudioRenderer(
+                arrayOf(MediaCodecAudioRenderer(
                     context,
                     mediaCodecSelector,
                     handler,
                     audioListener,
                     audioSink
-                )
-            )
+                ))
+        }
+
+    public fun audioOnlyWithOffloadRenderersFactory(
+        audioSink: AudioSink,
+        offloadedAudioSink: AudioSink,
+        mediaCodecSelector: MediaCodecSelector = mediaCodecSelector()
+    ): RenderersFactory =
+        RenderersFactory { handler, _, audioListener, _, _ ->
+            arrayOf(MediaCodecAudioRenderer(
+                context,
+                mediaCodecSelector,
+                handler,
+                audioListener,
+                audioSink
+            ),MediaCodecAudioRenderer(
+                context,
+                mediaCodecSelector,
+                handler,
+                audioListener,
+                offloadedAudioSink
+            ))
         }
 
     public fun mediaCodecSelector(): MediaCodecSelector = MediaCodecSelector.DEFAULT
