@@ -16,12 +16,16 @@
 
 package com.google.android.horologist.media.ui.state.model
 
+import com.google.android.horologist.media.model.PositionPredictor
 import com.google.android.horologist.media.ui.ExperimentalHorologistMediaUiApi
 
 @ExperimentalHorologistMediaUiApi
-public data class TrackPositionUiModel(
-    val current: Long,
-    val duration: Long,
-    val percent: Float,
-    val showProgress: Boolean
-)
+public sealed class TrackPositionUiModel(public val showProgress: Boolean) {
+    public data class Predictive(public val predictor: PositionPredictor) : TrackPositionUiModel(true)
+    public data class Actual(
+        public val percent: Float,
+        public val duration: Long,
+        public val position: Long
+    ) : TrackPositionUiModel(true)
+    public object Hidden : TrackPositionUiModel(false)
+}

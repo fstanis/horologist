@@ -66,15 +66,13 @@ class MediaPlayerStatesScreenTest(
             } else {
                 null
             },
-            trackPosition = if (state.media) {
-                TrackPositionUiModel(
-                    current = 30,
-                    duration = 225,
-                    percent = 0.133f,
-                    showProgress = true
+            trackPositionUiModel = if (state.media) {
+                TrackPositionUiModel.Actual(
+                    currentPositionMs = 30,
+                    durationMs = 225
                 )
             } else {
-                null
+                TrackPositionUiModel.Hidden
             },
             connected = state.connected
         )

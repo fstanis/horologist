@@ -19,30 +19,32 @@
 package com.google.android.horologist.media.ui.state.mapper
 
 import com.google.android.horologist.media.ExperimentalHorologistMediaApi
-import com.google.android.horologist.media.model.MediaPosition
+import com.google.android.horologist.media.model.PlaybackState
+import com.google.android.horologist.media.model.PlaybackStateEvent
 import com.google.android.horologist.media.ui.ExperimentalHorologistMediaUiApi
 import com.google.android.horologist.media.ui.state.model.TrackPositionUiModel
 
 /**
- * Map a [MediaPosition] into a [TrackPositionUiModel]
+ * Map a [PlaybackState] into a [TrackPositionUiModel]
  */
 @ExperimentalHorologistMediaUiApi
 public object TrackPositionUiModelMapper {
-
-    internal data class TrackPositionValues(val current: Long, val duration: Long, val percent: Float, val showProgressBar: Boolean)
-
-    public fun map(mediaPosition: MediaPosition): TrackPositionUiModel {
-        val (current, duration, percent, showProgress) = if (mediaPosition is MediaPosition.KnownDuration) {
-            TrackPositionValues(mediaPosition.current.inWholeMilliseconds, mediaPosition.duration.inWholeMilliseconds, mediaPosition.percent, true)
+    public fun map(event: PlaybackStateEvent): TrackPositionUiModel {
+        val currentPositionMs = event.playbackState.currentPosition?.inWholeMilliseconds
+        val durationMs = event.playbackState.duration?.inWholeMilliseconds
+        if (currentPositionMs == null || durationMs == null) {
+            return TrackPositionUiModel.Hidden
+        }
+        val percent = if (durationMs > 0) {
+            currentPositionMs.toFloat() / durationMs.toFloat()
         } else {
-            TrackPositionValues(0L, 0L, 0F, false)
+            0f
         }
 
-        return TrackPositionUiModel(
-            current = current,
-            duration = duration,
-            percent = percent,
-            showProgress = showProgress
-        )
+        val predictor = event.createPositionPredictor()
+        if (event.playbackState.isPlaying && predictor != null) {
+            return TrackPositionUiModel.Predictive(predictor)
+        }
+        return TrackPositionUiModel.Actual(percent, durationMs, currentPositionMs)
     }
 }

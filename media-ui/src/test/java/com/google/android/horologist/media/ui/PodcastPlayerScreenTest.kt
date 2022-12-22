@@ -59,7 +59,7 @@ class PodcastPlayerScreenTest(
                 title = "The power of types",
                 subtitle = "Kotlinconf"
             ),
-            trackPosition = TrackPositionUiModel(current = 30, duration = 225, percent = 0.133f, showProgress = true),
+            trackPositionUiModel = TrackPositionUiModel.Actual(currentPositionMs = 30, durationMs = 225),
             connected = true
         )
 
@@ -71,8 +71,7 @@ class PodcastPlayerScreenTest(
                         onPauseButtonClick = { },
                         playPauseButtonEnabled = playerUiState.playPauseEnabled,
                         playing = playerUiState.playing,
-                        percent = playerUiState.trackPosition?.percent ?: 0f,
-                        showProgress = playerUiState.trackPosition?.showProgress ?: false,
+                        trackPositionUiModel = playerUiState.trackPositionUiModel,
                         onSeekBackButtonClick = { },
                         seekBackButtonEnabled = playerUiState.seekBackEnabled,
                         onSeekForwardButtonClick = { },
