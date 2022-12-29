@@ -19,6 +19,7 @@
 package com.google.android.horologist.media.data.mapper
 
 import androidx.media3.common.C
+import androidx.media3.common.Player
 import com.google.android.horologist.media.data.ExperimentalHorologistMediaDataApi
 import com.google.android.horologist.media.model.PlaybackState
 import com.google.android.horologist.media.model.PlaybackStateEvent
@@ -62,6 +63,9 @@ class PlaybackStateMapperTest {
 
     @Test
     fun `check position calculations past end`() {
+        fakeStatePlayer.overrideState(
+            Player.STATE_READY
+        )
         fakeStatePlayer.overridePosition(
             currentPosition = 100L,
             duration = 99L
@@ -73,6 +77,9 @@ class PlaybackStateMapperTest {
 
     @Test
     fun `check position calculations during`() {
+        fakeStatePlayer.overrideState(
+            Player.STATE_READY
+        )
         fakeStatePlayer.overridePosition(
             currentPosition = 100L,
             duration = 1000L

@@ -142,16 +142,6 @@ public class PlayerRepositoryImpl(
         _seekForwardIncrement.value = player.seekForwardIncrement.toDuration(DurationUnit.MILLISECONDS)
     }
 
-    // TODO https://github.com/google/horologist/issues/496
-    private fun updateTimeline(player: Player) {
-        mediaIndexToSeekTo?.let { index ->
-            player.seekTo(index, 0)
-            player.prepare()
-            player.play()
-            mediaIndexToSeekTo = null
-        }
-    }
-
     private fun updateState(player: Player) {
         updatePlaybackState(player, Cause.PlayerStateChanged)
     }
@@ -295,10 +285,7 @@ public class PlayerRepositoryImpl(
     override fun setMediaList(mediaList: List<Media>, index: Int, position: Duration?) {
         checkNotClosed()
 
-        player.value?.let {
-            it.setMediaItems(mediaList.map(mediaItemMapper::map), index, position?.inWholeMilliseconds ?: C.TIME_UNSET)
-            updatePosition()
-        }
+        player.value?.setMediaItems(mediaList.map(mediaItemMapper::map), index, position?.inWholeMilliseconds ?: C.TIME_UNSET)
     }
 
     override fun addMedia(media: Media) {

@@ -64,7 +64,7 @@ class MediaPlayerScreenTest(
                 title = "Weather with You",
                 subtitle = "Crowded House"
             ),
-            trackPositionUiModel = TrackPositionUiModel.Actual(currentPositionMs = 30, durationMs = 225),
+            trackPositionUiModel = TrackPositionUiModel.Actual(percent = 0.1f, position = 30, duration = 300),
             connected = true
         )
 

@@ -106,13 +106,13 @@ public fun PodcastControlButtons(
     playPauseButtonEnabled: Boolean,
     playing: Boolean,
     onSeekBackButtonClick: () -> Unit,
-    seekBackButtonIncrement: SeekButtonIncrement,
     seekBackButtonEnabled: Boolean,
     onSeekForwardButtonClick: () -> Unit,
-    seekForwardButtonIncrement: SeekButtonIncrement,
     seekForwardButtonEnabled: Boolean,
     trackPositionUiModel: TrackPositionUiModel,
     modifier: Modifier = Modifier,
+    seekBackButtonIncrement: SeekButtonIncrement = SeekButtonIncrement.Unknown,
+    seekForwardButtonIncrement: SeekButtonIncrement = SeekButtonIncrement.Unknown,
     colors: ButtonColors = MediaButtonDefaults.mediaButtonDefaultColors
 ) {
     ControlButtonLayout(

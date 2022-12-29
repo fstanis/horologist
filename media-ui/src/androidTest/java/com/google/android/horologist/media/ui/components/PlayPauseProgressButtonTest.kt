@@ -48,7 +48,7 @@ class PlayPauseProgressButtonTest {
                 onPauseClick = { clicked = true },
                 enabled = true,
                 playing = true,
-                trackPositionUiModel = TrackPositionUiModel.Hidden
+                trackPositionUiModel = TrackPositionUiModel.Actual(0f, 100, 0)
             )
         }
 
@@ -77,7 +77,7 @@ class PlayPauseProgressButtonTest {
                 onPauseClick = {},
                 enabled = true,
                 playing = false,
-                trackPositionUiModel = TrackPositionUiModel.Hidden
+                trackPositionUiModel = TrackPositionUiModel.Actual(0f, 100, 0)
             )
         }
 
@@ -105,7 +105,7 @@ class PlayPauseProgressButtonTest {
                 onPauseClick = {},
                 enabled = true,
                 playing = false,
-                trackPositionUiModel = TrackPositionUiModel.Actual(50, 100)
+                trackPositionUiModel = TrackPositionUiModel.Actual(0.5f, 50, 100)
             )
         }
 

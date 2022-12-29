@@ -22,6 +22,7 @@ import androidx.media3.common.Player
 import com.google.android.horologist.media.data.ExperimentalHorologistMediaDataApi
 import com.google.android.horologist.media.model.PlaybackState
 import com.google.android.horologist.media.model.PlaybackStateEvent
+import com.google.android.horologist.media.model.PlayerState
 import kotlin.time.Duration.Companion.milliseconds
 
 /**
@@ -43,14 +44,17 @@ public class PlaybackStateMapper(private val timestampProvider: () -> Long = { S
         }
         val playbackSpeed = player.playbackParameters.speed
         val isLive = player.isCurrentMediaItemLive && player.isCurrentMediaItemDynamic
+        val playerState = PlayerStateMapper.map(player)
         return if (
             player.currentMediaItem == null ||
             player.duration == C.TIME_UNSET ||
             player.duration <= 0L ||
-            player.currentPosition < 0L
+            player.currentPosition < 0L ||
+            playerState == PlayerState.Idle ||
+            playerState == PlayerState.Ended
         ) {
             PlaybackState(
-                playerState = PlayerStateMapper.map(player),
+                playerState = playerState,
                 currentPosition = null,
                 duration = null,
                 playbackSpeed = playbackSpeed,
@@ -58,7 +62,7 @@ public class PlaybackStateMapper(private val timestampProvider: () -> Long = { S
             )
         } else {
             PlaybackState(
-                playerState = PlayerStateMapper.map(player),
+                playerState = playerState,
                 currentPosition = player.currentPosition.milliseconds,
                 duration = (player.duration.coerceAtLeast(player.currentPosition)).milliseconds,
                 playbackSpeed = playbackSpeed,

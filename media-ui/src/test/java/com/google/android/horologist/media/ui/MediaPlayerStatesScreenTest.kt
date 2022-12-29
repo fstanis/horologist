@@ -67,10 +67,7 @@ class MediaPlayerStatesScreenTest(
                 null
             },
             trackPositionUiModel = if (state.media) {
-                TrackPositionUiModel.Actual(
-                    currentPositionMs = 30,
-                    durationMs = 225
-                )
+                TrackPositionUiModel.Actual(percent = 0.1f, position = 30, duration = 300)
             } else {
                 TrackPositionUiModel.Hidden
             },
