@@ -32,6 +32,7 @@ import com.google.android.horologist.audio.SystemAudioRepository
 import com.google.android.horologist.audio.VolumeRepository
 import com.google.android.horologist.audio.VolumeState
 import kotlinx.coroutines.flow.StateFlow
+import kotlin.math.roundToInt
 
 /**
  * ViewModel for a Volume Control Screen.
@@ -54,22 +55,21 @@ public open class VolumeViewModel(
 
     public val audioOutput: StateFlow<AudioOutput> = audioOutputRepository.audioOutput
 
-    public fun increaseVolumeWithHaptics() {
-        increaseVolume()
+    public fun adjustVolumeWithHaptics(percent: Float) {
+        adjustVolume(percent)
         performHaptics()
     }
 
-    public fun decreaseVolumeWithHaptics() {
-        decreaseVolume()
-        performHaptics()
-    }
-
-    public fun increaseVolume() {
-        volumeRepository.increaseVolume()
-    }
-
-    public fun decreaseVolume() {
-        volumeRepository.decreaseVolume()
+    public fun adjustVolume(percent: Float) {
+        if (percent > 0) {
+            repeat((percent / VOLUME_STEP).roundToInt().coerceAtLeast(1)){
+                volumeRepository.increaseVolume()
+            }
+        } else if (percent < 0) {
+            repeat((-percent / VOLUME_STEP).roundToInt().coerceAtLeast(1)){
+                volumeRepository.decreaseVolume()
+            }
+        }
     }
 
     public fun launchOutputSelection() {
@@ -93,16 +93,11 @@ public open class VolumeViewModel(
         Log.i(TAG, "Effect not supported")
     }
 
-    public fun onVolumeChangeByScroll(pixels: Float) {
-        when {
-            pixels > 0 -> increaseVolumeWithHaptics()
-            pixels < 0 -> decreaseVolumeWithHaptics()
-        }
-    }
-
     @ExperimentalHorologistAudioUiApi
     public companion object {
         private const val TAG = "VolumeViewModel"
+
+        internal const val VOLUME_STEP = 0.05f
 
         public val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {

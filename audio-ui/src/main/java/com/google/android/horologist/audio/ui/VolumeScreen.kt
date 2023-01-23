@@ -43,6 +43,7 @@ import androidx.wear.compose.material.Stepper
 import androidx.wear.compose.material.Text
 import com.google.android.horologist.audio.AudioOutput
 import com.google.android.horologist.audio.VolumeState
+import com.google.android.horologist.audio.ui.VolumeScreenDefaults.VOLUME_PERCENT_PER_PIXEL
 import com.google.android.horologist.audio.ui.components.AudioOutputUi
 import com.google.android.horologist.audio.ui.components.DeviceChip
 import com.google.android.horologist.audio.ui.components.toAudioOutputUi
@@ -77,13 +78,23 @@ public fun VolumeScreen(
         modifier = modifier,
         volume = { volumeState },
         audioOutputUi = audioOutput.toAudioOutputUi(),
-        increaseVolume = { volumeViewModel.increaseVolume() },
-        decreaseVolume = { volumeViewModel.decreaseVolume() },
+        adjustVolume = { percent, sourceIsRotary ->
+            if (sourceIsRotary) {
+                volumeViewModel.adjustVolumeWithHaptics(percent)
+            } else {
+                volumeViewModel.adjustVolume(percent)
+            }
+        },
         onAudioOutputClick = { volumeViewModel.launchOutputSelection() },
         showVolumeIndicator = showVolumeIndicator,
-        onVolumeChangeByScroll = volumeViewModel::onVolumeChangeByScroll,
         increaseIcon = increaseIcon,
-        decreaseIcon = decreaseIcon
+        decreaseIcon = decreaseIcon,
+        volumeAdjustmentParameters = VolumeAdjustmentParameters(
+            buttonIncreasePercent = VolumeViewModel.VOLUME_STEP,
+            buttonDecreasePercent = -VolumeViewModel.VOLUME_STEP,
+            enableRotaryInput = true,
+            volumePerRotaryPixel = VOLUME_PERCENT_PER_PIXEL,
+        )
     )
 }
 
@@ -94,14 +105,13 @@ public fun VolumeScreen(
 public fun VolumeScreen(
     volume: () -> VolumeState,
     audioOutputUi: AudioOutputUi,
-    increaseVolume: () -> Unit,
-    decreaseVolume: () -> Unit,
+    adjustVolume: (percent: Float, sourceIsRotary: Boolean) -> Unit,
     onAudioOutputClick: () -> Unit,
     modifier: Modifier = Modifier,
     increaseIcon: @Composable () -> Unit = { VolumeScreenDefaults.IncreaseIcon() },
     decreaseIcon: @Composable () -> Unit = { VolumeScreenDefaults.DecreaseIcon() },
     showVolumeIndicator: Boolean = true,
-    onVolumeChangeByScroll: ((scrollPixels: Float) -> Unit)? = null
+    volumeAdjustmentParameters: VolumeAdjustmentParameters
 ) {
     VolumeScreen(
         volume = volume,
@@ -121,13 +131,12 @@ public fun VolumeScreen(
                 onAudioOutputClick = onAudioOutputClick
             )
         },
-        increaseVolume = increaseVolume,
-        decreaseVolume = decreaseVolume,
+        adjustVolume = adjustVolume,
         modifier = modifier,
         increaseIcon = increaseIcon,
         decreaseIcon = decreaseIcon,
         showVolumeIndicator = showVolumeIndicator,
-        onVolumeChangeByScroll = onVolumeChangeByScroll
+        volumeAdjustmentParameters = volumeAdjustmentParameters
     )
 }
 
@@ -137,13 +146,12 @@ public fun VolumeScreen(
 @Composable
 public fun VolumeWithLabelScreen(
     volume: () -> VolumeState,
-    increaseVolume: () -> Unit,
-    decreaseVolume: () -> Unit,
+    adjustVolume: (percent: Float, sourceIsRotary: Boolean) -> Unit,
     modifier: Modifier = Modifier,
     increaseIcon: @Composable () -> Unit = { VolumeScreenDefaults.IncreaseIcon() },
     decreaseIcon: @Composable () -> Unit = { VolumeScreenDefaults.DecreaseIcon() },
     showVolumeIndicator: Boolean = true,
-    onVolumeChangeByScroll: ((scrollPixels: Float) -> Unit)? = null
+    volumeAdjustmentParameters: VolumeAdjustmentParameters = VolumeScreenDefaults.adjustmentParameters
 ) {
     VolumeScreen(
         volume = volume,
@@ -155,13 +163,12 @@ public fun VolumeWithLabelScreen(
                 overflow = TextOverflow.Clip
             )
         },
-        increaseVolume = increaseVolume,
-        decreaseVolume = decreaseVolume,
+        adjustVolume = adjustVolume,
         modifier = modifier,
         increaseIcon = increaseIcon,
         decreaseIcon = decreaseIcon,
         showVolumeIndicator = showVolumeIndicator,
-        onVolumeChangeByScroll = onVolumeChangeByScroll
+        volumeAdjustmentParameters = volumeAdjustmentParameters
     )
 }
 
@@ -169,16 +176,15 @@ public fun VolumeWithLabelScreen(
 internal fun VolumeScreen(
     volume: () -> VolumeState,
     contentSlot: @Composable () -> Unit,
-    increaseVolume: () -> Unit,
-    decreaseVolume: () -> Unit,
+    adjustVolume: (percent: Float, sourceIsRotary: Boolean) -> Unit,
     modifier: Modifier = Modifier,
     increaseIcon: @Composable () -> Unit = { VolumeScreenDefaults.IncreaseIcon() },
     decreaseIcon: @Composable () -> Unit = { VolumeScreenDefaults.DecreaseIcon() },
     showVolumeIndicator: Boolean = true,
-    onVolumeChangeByScroll: ((scrollPixels: Float) -> Unit)? = null
+    volumeAdjustmentParameters: VolumeAdjustmentParameters
 ) {
-    val focusRequester = remember(onVolumeChangeByScroll) {
-        if (onVolumeChangeByScroll != null) {
+    val focusRequester = remember(volumeAdjustmentParameters.enableRotaryInput) {
+        if (volumeAdjustmentParameters.enableRotaryInput) {
             FocusRequester()
         } else {
             null
@@ -187,17 +193,24 @@ internal fun VolumeScreen(
 
     Box(
         modifier = modifier.fillMaxSize().run {
-            onVolumeChangeByScroll?.let {
-                onRotaryInputAccumulated(onValueChange = it)
+            if (volumeAdjustmentParameters.enableRotaryInput) {
+                onRotaryInputAccumulated(onValueChange = {
+                    adjustVolume(it * volumeAdjustmentParameters.volumePerRotaryPixel, true)
+                })
                     .focusRequester(focusRequester!!)
                     .focusable()
-            } ?: this
+            } else {
+                this
+            }
         }
     ) {
         val volumeState = volume()
         Stepper(
             value = volumeState.current.toFloat(),
-            onValueChange = { if (it > volumeState.current) increaseVolume() else decreaseVolume() },
+            onValueChange = {
+                adjustVolume(
+                if (it > volumeState.current) volumeAdjustmentParameters.buttonIncreasePercent else volumeAdjustmentParameters.buttonDecreasePercent
+                , false)    },
             steps = volumeState.max - 1,
             valueRange = (0f..volumeState.max.toFloat()),
             increaseIcon = {
@@ -242,6 +255,15 @@ public object VolumeScreenDefaults {
             contentDescription = stringResource(id = R.string.horologist_volume_screen_volume_down_content_description)
         )
     }
+
+    public const val VOLUME_PERCENT_PER_PIXEL = 0.001f
+
+    public val adjustmentParameters = VolumeAdjustmentParameters(
+        buttonDecreasePercent = 0.05f,
+        buttonIncreasePercent = -0.05f,
+        enableRotaryInput = true,
+        volumePerRotaryPixel = VOLUME_PERCENT_PER_PIXEL
+    )
 }
 
 @Composable
