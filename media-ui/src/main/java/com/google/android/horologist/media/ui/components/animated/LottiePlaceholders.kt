@@ -57,7 +57,7 @@ internal object LottiePlaceholders {
             }
             _play = materialIcon(name = "Play") {
                 materialPath {
-                    moveToRelative(11.673f, 16.648f)
+                    moveToRelative(12.644f, 16.648f)
                     curveToRelative(0.0f, 0.0f, 7.242f, -4.637f, 7.242f, -4.637f)
                     curveToRelative(0.0f, 0.0f, 0.0f, -0.005f, 0.0f, -0.005f)
                     curveToRelative(0.0f, 0.0f, -7.265f, -4.669f, -7.265f, -4.669f)
@@ -65,11 +65,11 @@ internal object LottiePlaceholders {
                     close()
                 }
                 materialPath {
-                    moveToRelative(5.085f, 3.124f)
-                    curveToRelative(0.0f, 0.0f, 0.0f, 17.753f, 0.0f, 17.753f)
-                    curveToRelative(0.0f, 0.0f, 6.892f, -4.421f, 6.892f, -4.421f)
+                    moveToRelative(7.455f, 4.124f)
+                    curveToRelative(0.0f, 0.0f, 0.0f, 15.753f, 0.0f, 15.753f)
+                    curveToRelative(0.0f, 0.0f, 5.492f, -3.421f, 5.492f, -3.421f)
                     curveToRelative(0.0f, 0.0f, 0.001f, -8.909f, 0.001f, -8.909f)
-                    curveToRelative(0.0f, 0.0f, -6.893f, -4.422f, -6.893f, -4.422f)
+                    curveToRelative(0.0f, 0.0f, -5.493f, -3.422f, -5.493f, -3.422f)
                     close()
                 }
             }
