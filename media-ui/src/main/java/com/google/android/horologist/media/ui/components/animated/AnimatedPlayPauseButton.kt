@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,6 +42,7 @@ import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.ButtonColors
 import androidx.wear.compose.material.ButtonDefaults
 import androidx.wear.compose.material.CircularProgressIndicator
+import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.LocalContentAlpha
 import androidx.wear.compose.material.MaterialTheme
 import com.airbnb.lottie.LottieComposition
@@ -85,13 +87,17 @@ public fun AnimatedPlayPauseButton(
             backgroundColor = backgroundColor
         )
     } else {
-        val composition: LottieComposition? by rememberLottieComposition(
+        val composition = rememberLottieComposition(
             spec = LottieCompositionSpec.Asset(
                 "lottie/PlayPause.json"
             )
         )
+        val isCompositionReady by produceState(initialValue = false, producer = {
+            composition.await()
+            value = false
+        })
         val lottieProgress =
-            animateLottieProgressAsState(playing = playing, composition = composition)
+            animateLottieProgressAsState(playing = playing, composition = composition.value)
 
         Box(
             modifier = modifier
@@ -128,14 +134,24 @@ public fun AnimatedPlayPauseButton(
                 enabled = enabled,
                 colors = colors
             ) {
-                LottieAnimation(
-                    modifier = Modifier
-                        .size(iconSize)
-                        .align(Alignment.Center)
-                        .graphicsLayer(alpha = LocalContentAlpha.current),
-                    composition = composition,
-                    progress = { lottieProgress.value }
-                )
+                if (isCompositionReady) {
+                    LottieAnimation(
+                        modifier = Modifier
+                            .size(iconSize)
+                            .align(Alignment.Center)
+                            .graphicsLayer(alpha = LocalContentAlpha.current),
+                        composition = composition.value,
+                        progress = { lottieProgress.value }
+                    )
+                } else {
+                    Icon(
+                        modifier = Modifier
+                            .size(iconSize)
+                            .align(Alignment.Center),
+                        imageVector = if (playing) LottiePlaceholders.Play else LottiePlaceholders.Pause,
+                        contentDescription = null
+                    )
+                }
             }
         }
     }
