@@ -22,7 +22,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.google.android.horologist.images.base.paintable.DrawableResPaintable
+import com.google.android.horologist.images.base.paintable.DrawableResPaintableIcon
 import com.google.android.horologist.images.coil.FakeImageLoader
 import com.google.android.horologist.screenshots.ScreenshotBaseTest
 import com.google.android.horologist.screenshots.ScreenshotTestRule.Companion.screenshotTestRuleParams
@@ -48,7 +48,7 @@ class SignedInConfirmationDialogTest : ScreenshotBaseTest(
                     onDismissOrTimeout = {},
                     name = "Maggie",
                     email = "maggie@example.com",
-                    avatar = DrawableResPaintable(R.mipmap.sym_def_app_icon),
+                    avatar = DrawableResPaintableIcon(R.mipmap.sym_def_app_icon),
                 )
             }
         }
@@ -63,7 +63,7 @@ class SignedInConfirmationDialogTest : ScreenshotBaseTest(
             SignedInConfirmationDialog(
                 onDismissOrTimeout = {},
                 email = "maggie@example.com",
-                avatar = DrawableResPaintable(R.mipmap.sym_def_app_icon),
+                avatar = DrawableResPaintableIcon(R.mipmap.sym_def_app_icon),
             )
         }
     }
@@ -78,7 +78,7 @@ class SignedInConfirmationDialogTest : ScreenshotBaseTest(
                 onDismissOrTimeout = {},
                 name = "",
                 email = "maggie@example.com",
-                avatar = DrawableResPaintable(R.mipmap.sym_def_app_icon),
+                avatar = DrawableResPaintableIcon(R.mipmap.sym_def_app_icon),
             )
         }
     }
@@ -102,7 +102,7 @@ class SignedInConfirmationDialogTest : ScreenshotBaseTest(
             SignedInConfirmationDialog(
                 onDismissOrTimeout = {},
                 name = "Maggie",
-                avatar = DrawableResPaintable(R.mipmap.sym_def_app_icon),
+                avatar = DrawableResPaintableIcon(R.mipmap.sym_def_app_icon),
             )
         }
     }
@@ -124,7 +124,7 @@ class SignedInConfirmationDialogTest : ScreenshotBaseTest(
                 onDismissOrTimeout = {},
                 name = "Wolfeschlegelsteinhausenbergerdorff",
                 email = "wolfeschlegelsteinhausenbergerdorff@example.com",
-                avatar = DrawableResPaintable(R.mipmap.sym_def_app_icon),
+                avatar = DrawableResPaintableIcon(R.mipmap.sym_def_app_icon),
             )
         }
     }

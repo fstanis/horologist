@@ -21,8 +21,8 @@ import androidx.compose.material.icons.filled.Image
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.wear.compose.material.MaterialTheme
+import com.google.android.horologist.images.base.paintable.UriPaintable
 import com.google.android.horologist.images.base.util.rememberVectorPainter
-import com.google.android.horologist.images.coil.CoilPaintable
 import com.google.android.horologist.images.coil.FakeImageLoader
 import com.google.android.horologist.screenshots.ScreenshotBaseTest
 import org.junit.Test
@@ -36,12 +36,14 @@ class OutlinedChipTest : ScreenshotBaseTest() {
                     label = "Primary label",
                     onClick = { },
                     secondaryLabel = "Secondary label",
-                    icon = CoilPaintable(
+                    icon = UriPaintable(
                         "iconUri",
-                        placeholder = rememberVectorPainter(
-                            image = Icons.Default.Image,
-                            tintColor = MaterialTheme.colors.primary,
-                        ),
+                        placeholder = {
+                            rememberVectorPainter(
+                                image = Icons.Default.Image,
+                                tintColor = MaterialTheme.colors.primary,
+                            )
+                        },
                     ),
                 )
             }
@@ -61,12 +63,14 @@ class OutlinedChipTest : ScreenshotBaseTest() {
                     label = "Primary label",
                     onClick = { },
                     secondaryLabel = "Secondary label",
-                    icon = CoilPaintable(
+                    icon = UriPaintable(
                         "iconUri",
-                        placeholder = rememberVectorPainter(
-                            image = Icons.Default.Image,
-                            tintColor = MaterialTheme.colors.primary,
-                        ),
+                        placeholder = {
+                            rememberVectorPainter(
+                                image = Icons.Default.Image,
+                                tintColor = MaterialTheme.colors.primary,
+                            )
+                        },
                     ),
                     enabled = false,
                 )

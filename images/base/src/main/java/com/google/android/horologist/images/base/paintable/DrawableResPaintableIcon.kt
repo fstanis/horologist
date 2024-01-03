@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 The Android Open Source Project
+ * Copyright 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,19 @@
  * limitations under the License.
  */
 
-package com.google.android.horologist.auth.data.common.model
+package com.google.android.horologist.images.base.paintable
 
-import com.google.android.horologist.images.base.paintable.Paintable
+import androidx.annotation.DrawableRes
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 
-public data class AuthUser(
-    val displayName: String? = null,
-    val email: String? = null,
-    val avatar: Paintable? = null,
-)
+/** A drawable resource ID that can be represented as a [Painter]. */
+@JvmInline
+public value class DrawableResPaintableIcon(
+    @DrawableRes private val id: Int,
+) : PaintableIcon {
+
+    @Composable
+    override fun rememberPainter(): Painter = painterResource(id = id)
+}

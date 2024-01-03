@@ -23,6 +23,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavHostController
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
+import com.google.android.horologist.images.coil.LoadPaintablesUsingCoil
 import com.google.android.horologist.mediasample.ui.util.JankPrinter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,10 +41,12 @@ class MediaActivity : ComponentActivity() {
 
         setContent {
             navController = rememberSwipeDismissableNavController()
-            UampWearApp(
-                navController = navController,
-                intent = intent,
-            )
+            LoadPaintablesUsingCoil {
+                UampWearApp(
+                    navController = navController,
+                    intent = intent,
+                )
+            }
 
             LaunchedEffect(Unit) {
                 navController.currentBackStackEntryFlow.collect {

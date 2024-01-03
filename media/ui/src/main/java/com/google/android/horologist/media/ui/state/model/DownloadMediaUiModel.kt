@@ -17,46 +17,73 @@
 package com.google.android.horologist.media.ui.state.model
 
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
+import com.google.android.horologist.images.base.paintable.Paintable
+import com.google.android.horologist.images.base.paintable.UriPaintable
 
 @ExperimentalHorologistApi
 public sealed class DownloadMediaUiModel(
     public open val id: String,
     public open val title: String? = null,
-    public open val artworkUri: String? = null,
+    public open val artwork: Paintable? = null,
 ) {
     public data class Downloaded(
         override val id: String,
         override val title: String? = null,
         val artist: String? = null,
-        override val artworkUri: String? = null,
+        override val artwork: Paintable? = null,
     ) : DownloadMediaUiModel(
         id = id,
         title = title,
-        artworkUri = artworkUri,
-    )
+        artwork = artwork,
+    ) {
+        @Deprecated("Use constructor with Paintable instead of providing the URI")
+        public constructor(
+            id: String,
+            title: String? = null,
+            artist: String? = null,
+            artworkUri: String? = null,
+        ) : this(id, title, artist, artworkUri?.let { UriPaintable(it) })
+    }
 
     public data class Downloading(
         override val id: String,
         override val title: String? = null,
         val progress: Progress,
         val size: Size,
-        override val artworkUri: String? = null,
+        override val artwork: Paintable? = null,
     ) : DownloadMediaUiModel(
         id = id,
         title = title,
-        artworkUri = artworkUri,
-    )
+        artwork = artwork,
+    ) {
+        @Deprecated("Use constructor with Paintable instead of providing the URI")
+        public constructor(
+            id: String,
+            title: String? = null,
+            progress: Progress,
+            size: Size,
+            artworkUri: String? = null,
+        ) : this(id, title, progress, size, artworkUri?.let { UriPaintable(it) })
+    }
 
     public data class NotDownloaded(
         override val id: String,
         override val title: String? = null,
         val artist: String? = null,
-        override val artworkUri: String? = null,
+        override val artwork: Paintable? = null,
     ) : DownloadMediaUiModel(
         id = id,
         title = title,
-        artworkUri = artworkUri,
-    )
+        artwork = artwork,
+    ) {
+        @Deprecated("Use constructor with Paintable instead of providing the URI")
+        public constructor(
+            id: String,
+            title: String? = null,
+            artist: String? = null,
+            artworkUri: String? = null,
+        ) : this(id, title, artist, artworkUri?.let { UriPaintable(it) })
+    }
 
     public sealed class Progress {
         public object Waiting : Progress()

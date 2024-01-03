@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.wear.compose.material.MaterialTheme
 import com.google.android.horologist.audio.ui.VolumeViewModel
+import com.google.android.horologist.images.base.paintable.UriPaintable
 import com.google.android.horologist.media.ui.components.PodcastControlButtons
 import com.google.android.horologist.media.ui.components.animated.AnimatedMediaControlButtons
 import com.google.android.horologist.media.ui.components.animated.AnimatedMediaInfoDisplay
@@ -49,7 +50,7 @@ fun UampMediaPlayerScreen(
     PlayerScreen(
         modifier = modifier,
         background = {
-            val artworkUri = it.media?.artworkUri
+            val artworkUri = (it.media?.artwork as? UriPaintable)?.uri?.toString()
             ArtworkColorBackground(
                 artworkUri = artworkUri,
                 defaultColor = MaterialTheme.colors.primary,

@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Chip
@@ -30,7 +29,6 @@ import androidx.wear.compose.material.ChipDefaults
 import androidx.wear.compose.material.Text
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.images.base.paintable.Paintable
-import com.google.android.horologist.images.coil.CoilPaintable
 import com.google.android.horologist.media.ui.state.model.MediaUiModel
 
 /**
@@ -51,14 +49,12 @@ public fun MediaChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     defaultTitle: String = "",
-    placeholder: Painter? = null,
 ) {
-    val artworkUri = media.artworkUri
     val title = media.title
 
     MediaChip(
         title = title.takeIf { it.isNotEmpty() } ?: defaultTitle,
-        artworkPaintable = CoilPaintable(artworkUri, placeholder),
+        artworkPaintable = media.artwork,
         onClick = onClick,
         modifier = modifier,
     )

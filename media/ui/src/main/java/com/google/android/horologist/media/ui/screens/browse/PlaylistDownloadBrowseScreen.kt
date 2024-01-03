@@ -22,7 +22,6 @@ import androidx.compose.material.icons.filled.Downloading
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
@@ -33,7 +32,6 @@ import com.google.android.horologist.composables.Section
 import com.google.android.horologist.compose.layout.ScalingLazyColumnState
 import com.google.android.horologist.compose.material.Chip
 import com.google.android.horologist.images.base.paintable.ImageVectorPaintable.Companion.asPaintable
-import com.google.android.horologist.images.coil.CoilPaintable
 import com.google.android.horologist.media.ui.R
 import com.google.android.horologist.media.ui.state.model.PlaylistDownloadUiModel
 
@@ -50,7 +48,6 @@ public fun PlaylistDownloadBrowseScreen(
     onPlaylistsClick: () -> Unit,
     onSettingsClick: () -> Unit,
     modifier: Modifier = Modifier,
-    downloadItemArtworkPlaceholder: Painter? = null,
     onDownloadItemInProgressClickActionLabel: String? = null,
 ) {
     BrowseScreen(
@@ -83,7 +80,7 @@ public fun PlaylistDownloadBrowseScreen(
                         Chip(
                             label = download.playlistUiModel.title,
                             onClick = { onDownloadItemClick(download) },
-                            icon = CoilPaintable(download.playlistUiModel.artworkUri, downloadItemArtworkPlaceholder),
+                            icon = download.playlistUiModel.artwork,
                             largeIcon = true,
                             colors = ChipDefaults.secondaryChipColors(),
                         )

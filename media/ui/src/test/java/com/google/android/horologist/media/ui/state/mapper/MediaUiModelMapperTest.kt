@@ -44,6 +44,5 @@ class MediaUiModelMapperTest {
         assertThat(result.id).isEqualTo(id)
         assertThat(result.title).isEqualTo(title)
         assertThat(result.subtitle).isEqualTo(artist)
-        assertThat(result.artworkUri).isEqualTo(artworkUri)
     }
 }

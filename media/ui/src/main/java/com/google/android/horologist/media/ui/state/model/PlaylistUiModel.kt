@@ -16,8 +16,18 @@
 
 package com.google.android.horologist.media.ui.state.model
 
+import com.google.android.horologist.images.base.paintable.Paintable
+import com.google.android.horologist.images.base.paintable.UriPaintable
+
 public data class PlaylistUiModel(
     val id: String,
     val title: String,
-    val artworkUri: String? = null,
-)
+    val artwork: Paintable?,
+) {
+    @Deprecated("Use constructor with Paintable instead of providing the URI")
+    public constructor(
+        id: String,
+        title: String,
+        artworkUri: String? = null,
+    ) : this(id, title, artworkUri?.let { UriPaintable(it) })
+}

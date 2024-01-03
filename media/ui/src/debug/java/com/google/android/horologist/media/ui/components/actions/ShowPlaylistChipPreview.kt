@@ -22,19 +22,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.android.horologist.compose.tools.WearPreview
+import com.google.android.horologist.images.base.paintable.UriPaintable
 import com.google.android.horologist.images.base.util.rememberVectorPainter
-import com.google.android.horologist.images.coil.CoilPaintable
 
 @WearPreview
 @Composable
 fun ShowPlaylistChipPreview() {
     ShowPlaylistChip(
-        artworkPaintable = CoilPaintable(
+        artworkPaintable = UriPaintable(
             "artworkUri",
-            rememberVectorPainter(
-                image = Icons.AutoMirrored.Default.FeaturedPlayList,
-                tintColor = Color.Green,
-            ),
+            {
+                rememberVectorPainter(
+                    image = Icons.AutoMirrored.Default.FeaturedPlayList,
+                    tintColor = Color.Green,
+                )
+            },
         ),
         name = "Playlists",
         onClick = {},
@@ -63,12 +65,14 @@ fun ShowPlaylistChipPreviewNoArtwork() {
 @Composable
 fun ShowPlaylistChipPreviewNoName() {
     ShowPlaylistChip(
-        artworkPaintable = CoilPaintable(
+        artworkPaintable = UriPaintable(
             "artworkUri",
-            rememberVectorPainter(
-                image = Icons.AutoMirrored.Default.FeaturedPlayList,
-                tintColor = Color.Green,
-            ),
+            {
+                rememberVectorPainter(
+                    image = Icons.AutoMirrored.Default.FeaturedPlayList,
+                    tintColor = Color.Green,
+                )
+            },
         ),
         name = null,
         onClick = {},
@@ -83,12 +87,14 @@ fun ShowPlaylistChipPreviewNoName() {
 @Composable
 fun ShowPlaylistChipPreviewVeryLongName() {
     ShowPlaylistChip(
-        artworkPaintable = CoilPaintable(
+        artworkPaintable = UriPaintable(
             "artworkUri",
-            rememberVectorPainter(
-                image = Icons.AutoMirrored.Default.FeaturedPlayList,
-                tintColor = Color.Green,
-            ),
+            {
+                rememberVectorPainter(
+                    image = Icons.AutoMirrored.Default.FeaturedPlayList,
+                    tintColor = Color.Green,
+                )
+            },
         ),
         name = "Very very very very very very very very very very very very very very very very very very very long title",
         onClick = {},

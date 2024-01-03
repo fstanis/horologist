@@ -53,12 +53,11 @@ package com.google.android.horologist.media.ui.components {
   }
 
   public final class MediaArtworkKt {
-    method @androidx.compose.runtime.Composable @com.google.android.horologist.annotations.ExperimentalHorologistApi public static void MediaArtwork(com.google.android.horologist.media.ui.state.model.MediaUiModel media, optional androidx.compose.ui.Modifier modifier, optional androidx.compose.ui.graphics.painter.Painter? placeholder);
     method @androidx.compose.runtime.Composable @com.google.android.horologist.annotations.ExperimentalHorologistApi public static void MediaArtwork(com.google.android.horologist.images.base.paintable.Paintable artworkPaintable, String? contentDescription, optional androidx.compose.ui.Modifier modifier);
   }
 
   public final class MediaChipKt {
-    method @androidx.compose.runtime.Composable @com.google.android.horologist.annotations.ExperimentalHorologistApi public static void MediaChip(com.google.android.horologist.media.ui.state.model.MediaUiModel media, kotlin.jvm.functions.Function0<kotlin.Unit> onClick, optional androidx.compose.ui.Modifier modifier, optional String defaultTitle, optional androidx.compose.ui.graphics.painter.Painter? placeholder);
+    method @androidx.compose.runtime.Composable @com.google.android.horologist.annotations.ExperimentalHorologistApi public static void MediaChip(com.google.android.horologist.media.ui.state.model.MediaUiModel media, kotlin.jvm.functions.Function0<kotlin.Unit> onClick, optional androidx.compose.ui.Modifier modifier, optional String defaultTitle);
     method @androidx.compose.runtime.Composable @com.google.android.horologist.annotations.ExperimentalHorologistApi public static void MediaChip(String title, com.google.android.horologist.images.base.paintable.Paintable? artworkPaintable, kotlin.jvm.functions.Function0<kotlin.Unit> onClick, optional androidx.compose.ui.Modifier modifier);
   }
 
@@ -370,7 +369,7 @@ package com.google.android.horologist.media.ui.screens.browse {
   }
 
   public final class PlaylistDownloadBrowseScreenKt {
-    method @androidx.compose.runtime.Composable @com.google.android.horologist.annotations.ExperimentalHorologistApi public static void PlaylistDownloadBrowseScreen(com.google.android.horologist.compose.layout.ScalingLazyColumnState columnState, com.google.android.horologist.media.ui.screens.browse.BrowseScreenState browseScreenState, kotlin.jvm.functions.Function1<? super com.google.android.horologist.media.ui.state.model.PlaylistDownloadUiModel,kotlin.Unit> onDownloadItemClick, kotlin.jvm.functions.Function1<? super com.google.android.horologist.media.ui.state.model.PlaylistDownloadUiModel,kotlin.Unit> onDownloadItemInProgressClick, kotlin.jvm.functions.Function0<kotlin.Unit> onPlaylistsClick, kotlin.jvm.functions.Function0<kotlin.Unit> onSettingsClick, optional androidx.compose.ui.Modifier modifier, optional androidx.compose.ui.graphics.painter.Painter? downloadItemArtworkPlaceholder, optional String? onDownloadItemInProgressClickActionLabel);
+    method @androidx.compose.runtime.Composable @com.google.android.horologist.annotations.ExperimentalHorologistApi public static void PlaylistDownloadBrowseScreen(com.google.android.horologist.compose.layout.ScalingLazyColumnState columnState, com.google.android.horologist.media.ui.screens.browse.BrowseScreenState browseScreenState, kotlin.jvm.functions.Function1<? super com.google.android.horologist.media.ui.state.model.PlaylistDownloadUiModel,kotlin.Unit> onDownloadItemClick, kotlin.jvm.functions.Function1<? super com.google.android.horologist.media.ui.state.model.PlaylistDownloadUiModel,kotlin.Unit> onDownloadItemInProgressClick, kotlin.jvm.functions.Function0<kotlin.Unit> onPlaylistsClick, kotlin.jvm.functions.Function0<kotlin.Unit> onSettingsClick, optional androidx.compose.ui.Modifier modifier, optional String? onDownloadItemInProgressClickActionLabel);
   }
 
 }
@@ -685,39 +684,41 @@ package com.google.android.horologist.media.ui.state.mapper {
 package com.google.android.horologist.media.ui.state.model {
 
   @com.google.android.horologist.annotations.ExperimentalHorologistApi public abstract sealed class DownloadMediaUiModel {
-    method public String? getArtworkUri();
+    method public com.google.android.horologist.images.base.paintable.Paintable? getArtwork();
     method public String getId();
     method public String? getTitle();
-    property public String? artworkUri;
+    property public com.google.android.horologist.images.base.paintable.Paintable? artwork;
     property public String id;
     property public String? title;
   }
 
   public static final class DownloadMediaUiModel.Downloaded extends com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel {
-    ctor public DownloadMediaUiModel.Downloaded(String id, optional String? title, optional String? artist, optional String? artworkUri);
+    ctor public DownloadMediaUiModel.Downloaded(String id, optional String? title, optional String? artist, optional com.google.android.horologist.images.base.paintable.Paintable? artwork);
+    ctor @Deprecated public DownloadMediaUiModel.Downloaded(String id, optional String? title, optional String? artist, optional String? artworkUri);
     method public String component1();
     method public String? component2();
     method public String? component3();
-    method public String? component4();
-    method public com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Downloaded copy(String id, String? title, String? artist, String? artworkUri);
+    method public com.google.android.horologist.images.base.paintable.Paintable? component4();
+    method public com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Downloaded copy(String id, String? title, String? artist, com.google.android.horologist.images.base.paintable.Paintable? artwork);
     method public String? getArtist();
     property public final String? artist;
-    property public String? artworkUri;
+    property public com.google.android.horologist.images.base.paintable.Paintable? artwork;
     property public String id;
     property public String? title;
   }
 
   public static final class DownloadMediaUiModel.Downloading extends com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel {
-    ctor public DownloadMediaUiModel.Downloading(String id, optional String? title, com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Progress progress, com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Size size, optional String? artworkUri);
+    ctor public DownloadMediaUiModel.Downloading(String id, optional String? title, com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Progress progress, com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Size size, optional com.google.android.horologist.images.base.paintable.Paintable? artwork);
+    ctor @Deprecated public DownloadMediaUiModel.Downloading(String id, optional String? title, com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Progress progress, com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Size size, optional String? artworkUri);
     method public String component1();
     method public String? component2();
     method public com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Progress component3();
     method public com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Size component4();
-    method public String? component5();
-    method public com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Downloading copy(String id, String? title, com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Progress progress, com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Size size, String? artworkUri);
+    method public com.google.android.horologist.images.base.paintable.Paintable? component5();
+    method public com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Downloading copy(String id, String? title, com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Progress progress, com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Size size, com.google.android.horologist.images.base.paintable.Paintable? artwork);
     method public com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Progress getProgress();
     method public com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Size getSize();
-    property public String? artworkUri;
+    property public com.google.android.horologist.images.base.paintable.Paintable? artwork;
     property public String id;
     property public final com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Progress progress;
     property public final com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.Size size;
@@ -725,15 +726,16 @@ package com.google.android.horologist.media.ui.state.model {
   }
 
   public static final class DownloadMediaUiModel.NotDownloaded extends com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel {
-    ctor public DownloadMediaUiModel.NotDownloaded(String id, optional String? title, optional String? artist, optional String? artworkUri);
+    ctor public DownloadMediaUiModel.NotDownloaded(String id, optional String? title, optional String? artist, optional com.google.android.horologist.images.base.paintable.Paintable? artwork);
+    ctor @Deprecated public DownloadMediaUiModel.NotDownloaded(String id, optional String? title, optional String? artist, optional String? artworkUri);
     method public String component1();
     method public String? component2();
     method public String? component3();
-    method public String? component4();
-    method public com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.NotDownloaded copy(String id, String? title, String? artist, String? artworkUri);
+    method public com.google.android.horologist.images.base.paintable.Paintable? component4();
+    method public com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel.NotDownloaded copy(String id, String? title, String? artist, com.google.android.horologist.images.base.paintable.Paintable? artwork);
     method public String? getArtist();
     property public final String? artist;
-    property public String? artworkUri;
+    property public com.google.android.horologist.images.base.paintable.Paintable? artwork;
     property public String id;
     property public String? title;
   }
@@ -769,23 +771,23 @@ package com.google.android.horologist.media.ui.state.model {
   }
 
   @com.google.android.horologist.annotations.ExperimentalHorologistApi public final class MediaUiModel {
-    ctor public MediaUiModel(String id, String title, optional String subtitle, optional String? artworkUri, optional androidx.compose.ui.graphics.Color? artworkColor, optional com.google.android.horologist.images.base.paintable.Paintable? titleIcon);
+    ctor public MediaUiModel(String id, String title, optional String subtitle, optional com.google.android.horologist.images.base.paintable.Paintable? artwork, optional androidx.compose.ui.graphics.Color? artworkColor, optional com.google.android.horologist.images.base.paintable.Paintable? titleIcon);
     method public String component1();
     method public String component2();
     method public String component3();
-    method public String? component4();
+    method public com.google.android.horologist.images.base.paintable.Paintable? component4();
     method public androidx.compose.ui.graphics.Color? component5-QN2ZGVo();
     method public com.google.android.horologist.images.base.paintable.Paintable? component6();
-    method public com.google.android.horologist.media.ui.state.model.MediaUiModel copy-gCxFOHY(String id, String title, String subtitle, String? artworkUri, androidx.compose.ui.graphics.Color? artworkColor, com.google.android.horologist.images.base.paintable.Paintable? titleIcon);
+    method public com.google.android.horologist.media.ui.state.model.MediaUiModel copy-gCxFOHY(String id, String title, String subtitle, com.google.android.horologist.images.base.paintable.Paintable? artwork, androidx.compose.ui.graphics.Color? artworkColor, com.google.android.horologist.images.base.paintable.Paintable? titleIcon);
+    method public com.google.android.horologist.images.base.paintable.Paintable? getArtwork();
     method public androidx.compose.ui.graphics.Color? getArtworkColor();
-    method public String? getArtworkUri();
     method public String getId();
     method public boolean getLoading();
     method public String getSubtitle();
     method public String getTitle();
     method public com.google.android.horologist.images.base.paintable.Paintable? getTitleIcon();
+    property public final com.google.android.horologist.images.base.paintable.Paintable? artwork;
     property public final androidx.compose.ui.graphics.Color? artworkColor;
-    property public final String? artworkUri;
     property public final String id;
     property public final boolean loading;
     property public final String subtitle;
@@ -816,15 +818,16 @@ package com.google.android.horologist.media.ui.state.model {
   }
 
   public final class PlaylistUiModel {
-    ctor public PlaylistUiModel(String id, String title, optional String? artworkUri);
+    ctor public PlaylistUiModel(String id, String title, com.google.android.horologist.images.base.paintable.Paintable? artwork);
+    ctor @Deprecated public PlaylistUiModel(String id, String title, optional String? artworkUri);
     method public String component1();
     method public String component2();
-    method public String? component3();
-    method public com.google.android.horologist.media.ui.state.model.PlaylistUiModel copy(String id, String title, String? artworkUri);
-    method public String? getArtworkUri();
+    method public com.google.android.horologist.images.base.paintable.Paintable? component3();
+    method public com.google.android.horologist.media.ui.state.model.PlaylistUiModel copy(String id, String title, com.google.android.horologist.images.base.paintable.Paintable? artwork);
+    method public com.google.android.horologist.images.base.paintable.Paintable? getArtwork();
     method public String getId();
     method public String getTitle();
-    property public final String? artworkUri;
+    property public final com.google.android.horologist.images.base.paintable.Paintable? artwork;
     property public final String id;
     property public final String title;
   }

@@ -199,6 +199,7 @@ fun PlaylistDownloadScreenPreviewFailed() {
 private val playlistUiModel = PlaylistUiModel(
     id = "id",
     title = "Playlist name",
+    artwork = null,
 )
 
 private val notDownloaded = listOf(

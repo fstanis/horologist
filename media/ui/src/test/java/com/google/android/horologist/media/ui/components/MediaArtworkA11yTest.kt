@@ -23,8 +23,8 @@ import androidx.compose.material.icons.filled.Album
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import com.google.android.horologist.images.base.paintable.UriPaintable
 import com.google.android.horologist.images.coil.FakeImageLoader
-import com.google.android.horologist.media.ui.state.model.MediaUiModel
 import com.google.android.horologist.screenshots.ScreenshotBaseTest
 import com.google.android.horologist.screenshots.ScreenshotTestRule
 import org.junit.Test
@@ -35,8 +35,6 @@ class MediaArtworkA11yTest : ScreenshotBaseTest(
         screenTimeText = {}
     },
 ) {
-    init {
-    }
 
     @Test
     fun a11y() {
@@ -46,12 +44,10 @@ class MediaArtworkA11yTest : ScreenshotBaseTest(
         ) {
             Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
                 MediaArtwork(
-                    media = MediaUiModel(
-                        id = "id",
-                        title = "title",
-                        artworkUri = FakeImageLoader.TestIconResourceUri,
-                    ),
-                    placeholder = rememberVectorPainter(image = Icons.Default.Album),
+                    contentDescription = "title",
+                    artworkPaintable = UriPaintable(
+                        FakeImageLoader.TestIconResourceUri,
+                    ) { rememberVectorPainter(image = Icons.Default.Album) },
                 )
             }
         }

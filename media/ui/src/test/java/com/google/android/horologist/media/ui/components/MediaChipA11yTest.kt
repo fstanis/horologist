@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.google.android.horologist.images.base.paintable.UriPaintable
 import com.google.android.horologist.images.coil.FakeImageLoader
 import com.google.android.horologist.media.ui.state.model.MediaUiModel
 import com.google.android.horologist.screenshots.ScreenshotBaseTest
@@ -44,7 +45,7 @@ class MediaChipA11yTest : ScreenshotBaseTest(
                     media = MediaUiModel(
                         id = "id",
                         title = "Red Hot Chilli Peppers",
-                        artworkUri = FakeImageLoader.TestIconResourceUri,
+                        artwork = UriPaintable(FakeImageLoader.TestIconResourceUri),
                     ),
                     onClick = {},
                 )
