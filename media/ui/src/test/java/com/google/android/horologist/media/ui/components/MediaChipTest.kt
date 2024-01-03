@@ -19,7 +19,7 @@ package com.google.android.horologist.media.ui.components
 import androidx.compose.foundation.layout.height
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.google.android.horologist.images.base.paintable.DrawableResPaintable
+import com.google.android.horologist.images.base.paintable.DrawableResPaintableIcon
 import com.google.android.horologist.logo.R
 import com.google.android.horologist.media.ui.state.model.MediaUiModel
 import com.google.android.horologist.screenshots.ScreenshotBaseTest
@@ -32,7 +32,7 @@ class MediaChipTest : ScreenshotBaseTest() {
         screenshotTestRule.setContent(isComponent = true, takeScreenshot = true) {
             MediaChip(
                 title = "Red Hot Chilli Peppers",
-                artworkPaintable = DrawableResPaintable(R.drawable.horologist_logo),
+                artworkPaintable = DrawableResPaintableIcon(R.drawable.horologist_logo),
                 onClick = {},
             )
         }
@@ -54,7 +54,7 @@ class MediaChipTest : ScreenshotBaseTest() {
         screenshotTestRule.setContent(isComponent = true, takeScreenshot = true) {
             MediaChip(
                 title = "Very very very very very very very very very very very long title",
-                artworkPaintable = DrawableResPaintable(R.drawable.horologist_logo),
+                artworkPaintable = DrawableResPaintableIcon(R.drawable.horologist_logo),
                 onClick = {},
             )
         }

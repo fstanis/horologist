@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.android.horologist.compose.tools.WearPreview
+import com.google.android.horologist.images.base.paintable.UriPaintable
 import com.google.android.horologist.images.base.util.rememberVectorPainter
 import com.google.android.horologist.media.ui.state.model.MediaUiModel
 
@@ -32,13 +33,16 @@ fun MediaChipPreview() {
         media = MediaUiModel(
             id = "id",
             title = "Red Hot Chilli Peppers",
-            artworkUri = "artworkUri",
+            artwork = UriPaintable(
+                "artworkUri",
+            ) {
+                rememberVectorPainter(
+                    image = Icons.Default.Album,
+                    tintColor = Color.Blue,
+                )
+            },
         ),
         onClick = {},
-        placeholder = rememberVectorPainter(
-            image = Icons.Default.Album,
-            tintColor = Color.Blue,
-        ),
     )
 }
 
@@ -50,12 +54,20 @@ fun MediaChipPreview() {
 @Composable
 fun MediaChipPreviewNoArtwork() {
     MediaChip(
-        media = MediaUiModel(id = "id", title = "Red Hot Chilli Peppers"),
-        onClick = {},
-        placeholder = rememberVectorPainter(
-            image = Icons.Default.Album,
-            tintColor = Color.Blue,
+        media = MediaUiModel(
+            id = "id",
+            title = "Red Hot Chilli Peppers",
+            artwork = UriPaintable(
+                null,
+                {
+                    rememberVectorPainter(
+                        image = Icons.Default.Album,
+                        tintColor = Color.Blue,
+                    )
+                },
+            ),
         ),
+        onClick = {},
     )
 }
 
@@ -67,13 +79,21 @@ fun MediaChipPreviewNoArtwork() {
 @Composable
 fun MediaChipPreviewNoTitle() {
     MediaChip(
-        media = MediaUiModel(id = "id", title = "title", artworkUri = "artworkUri"),
+        media = MediaUiModel(
+            id = "id",
+            title = "title",
+            artwork = UriPaintable(
+                "artworkUri",
+                {
+                    rememberVectorPainter(
+                        image = Icons.Default.Album,
+                        tintColor = Color.Blue,
+                    )
+                },
+            ),
+        ),
         onClick = {},
         defaultTitle = "No title",
-        placeholder = rememberVectorPainter(
-            image = Icons.Default.Album,
-            tintColor = Color.Blue,
-        ),
     )
 }
 
@@ -88,12 +108,16 @@ fun MediaChipPreviewVeryLongTitle() {
         media = MediaUiModel(
             id = "id",
             title = "Very very very very very very very very very very very very very very very very very very very long title",
-            artworkUri = "artworkUri",
+            artwork = UriPaintable(
+                "artworkUri",
+                {
+                    rememberVectorPainter(
+                        image = Icons.Default.Album,
+                        tintColor = Color.Blue,
+                    )
+                },
+            ),
         ),
         onClick = {},
-        placeholder = rememberVectorPainter(
-            image = Icons.Default.Album,
-            tintColor = Color.Blue,
-        ),
     )
 }

@@ -18,6 +18,7 @@ package com.google.android.horologist.auth.data.googlesignin
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.horologist.auth.data.common.model.AuthUser
+import com.google.android.horologist.images.base.paintable.UriPaintable
 
 /**
  * Functions to map models from other layers and / or packages into an [AuthUser].
@@ -28,11 +29,11 @@ public object AuthUserMapper {
      * Maps from a [GoogleSignInAccount].
      */
     public fun map(googleSignInAccount: GoogleSignInAccount?): AuthUser? =
-        googleSignInAccount?.let {
+        googleSignInAccount?.let { account ->
             AuthUser(
-                displayName = it.displayName,
-                email = it.email,
-                avatarUri = it.photoUrl.toString(),
+                displayName = account.displayName,
+                email = account.email,
+                avatar = account.photoUrl?.let { UriPaintable(it) },
             )
         }
 }

@@ -22,7 +22,7 @@ import androidx.compose.material.icons.automirrored.filled.DirectionsBike
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.ui.unit.LayoutDirection
 import com.google.accompanist.testharness.TestHarness
-import com.google.android.horologist.images.base.paintable.DrawableResPaintable
+import com.google.android.horologist.images.base.paintable.DrawableResPaintableIcon
 import com.google.android.horologist.images.base.paintable.ImageVectorPaintable.Companion.asPaintable
 import com.google.android.horologist.screenshots.ScreenshotBaseTest
 import org.junit.Test
@@ -101,7 +101,7 @@ class CompactChipTest : ScreenshotBaseTest() {
             CompactChip(
                 label = "Primary label",
                 onClick = { },
-                icon = DrawableResPaintable(R.drawable.ic_delete),
+                icon = DrawableResPaintableIcon(R.drawable.ic_delete),
             )
         }
     }
@@ -152,7 +152,7 @@ class CompactChipTest : ScreenshotBaseTest() {
                 CompactChip(
                     label = "Primary label",
                     onClick = { },
-                    icon = DrawableResPaintable(R.drawable.ic_media_play),
+                    icon = DrawableResPaintableIcon(R.drawable.ic_media_play),
                     iconRtlMode = IconRtlMode.Mirrored,
                 )
             }

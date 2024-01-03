@@ -94,6 +94,7 @@ metalava {
 
 dependencies {
     api(projects.datalayer.core)
+    api(projects.images.base)
 
     api(libs.androidx.datastore.core)
     api(libs.androidx.wear.phone.interactions)

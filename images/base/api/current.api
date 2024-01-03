@@ -12,8 +12,13 @@ package com.google.android.horologist.images.base.paintable {
     method public androidx.compose.ui.graphics.ImageBitmap asPaintable(android.graphics.Bitmap);
   }
 
-  @kotlin.jvm.JvmInline public final value class DrawableResPaintable implements com.google.android.horologist.images.base.paintable.PaintableIcon {
+  @kotlin.jvm.JvmInline public final value class DrawableResPaintable implements com.google.android.horologist.images.base.paintable.Paintable {
     ctor public DrawableResPaintable(@DrawableRes int id);
+    method @androidx.compose.runtime.Composable public androidx.compose.ui.graphics.painter.Painter rememberPainter();
+  }
+
+  @kotlin.jvm.JvmInline public final value class DrawableResPaintableIcon implements com.google.android.horologist.images.base.paintable.PaintableIcon {
+    ctor public DrawableResPaintableIcon(@DrawableRes int id);
     method @androidx.compose.runtime.Composable public androidx.compose.ui.graphics.painter.Painter rememberPainter();
   }
 
@@ -27,11 +32,33 @@ package com.google.android.horologist.images.base.paintable {
     method public androidx.compose.ui.graphics.vector.ImageVector asPaintable(androidx.compose.ui.graphics.vector.ImageVector);
   }
 
-  @androidx.compose.runtime.Stable public interface Paintable {
+  @androidx.compose.runtime.Stable public fun interface Paintable {
     method @androidx.compose.runtime.Composable public androidx.compose.ui.graphics.painter.Painter rememberPainter();
   }
 
-  @androidx.compose.runtime.Stable public interface PaintableIcon extends com.google.android.horologist.images.base.paintable.Paintable {
+  @androidx.compose.runtime.Stable public fun interface PaintableIcon extends com.google.android.horologist.images.base.paintable.Paintable {
+  }
+
+  @androidx.compose.runtime.Stable public final class UriPaintable implements com.google.android.horologist.images.base.paintable.Paintable {
+    ctor public UriPaintable(android.net.Uri uri, optional com.google.android.horologist.images.base.paintable.Paintable placeholder);
+    ctor public UriPaintable(String? uriString, optional com.google.android.horologist.images.base.paintable.Paintable placeholder);
+    method public android.net.Uri component1();
+    method public com.google.android.horologist.images.base.paintable.Paintable component2();
+    method public com.google.android.horologist.images.base.paintable.UriPaintable copy(android.net.Uri uri, com.google.android.horologist.images.base.paintable.Paintable placeholder);
+    method public com.google.android.horologist.images.base.paintable.Paintable getPlaceholder();
+    method public android.net.Uri getUri();
+    method @androidx.compose.runtime.Composable public androidx.compose.ui.graphics.painter.Painter rememberPainter();
+    property public final com.google.android.horologist.images.base.paintable.Paintable placeholder;
+    property public final android.net.Uri uri;
+  }
+
+  public static interface UriPaintable.Loader {
+    method @androidx.compose.runtime.Composable public androidx.compose.ui.graphics.painter.Painter? rememberPainterFromUriPaintable(com.google.android.horologist.images.base.paintable.UriPaintable uriPaintable);
+  }
+
+  public final class UriPaintableKt {
+    method public static androidx.compose.runtime.ProvidableCompositionLocal<com.google.android.horologist.images.base.paintable.UriPaintable.Loader> getLocalUriPaintableLoader();
+    property public static final androidx.compose.runtime.ProvidableCompositionLocal<com.google.android.horologist.images.base.paintable.UriPaintable.Loader> LocalUriPaintableLoader;
   }
 
 }

@@ -19,26 +19,9 @@ package com.google.android.horologist.media.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.images.base.paintable.Paintable
-import com.google.android.horologist.images.coil.CoilPaintable
-import com.google.android.horologist.media.ui.state.model.MediaUiModel
-
-@ExperimentalHorologistApi
-@Composable
-public fun MediaArtwork(
-    media: MediaUiModel,
-    modifier: Modifier = Modifier,
-    placeholder: Painter? = null,
-) {
-    MediaArtwork(
-        artworkPaintable = CoilPaintable(media.artworkUri, placeholder),
-        contentDescription = media.title,
-        modifier = modifier,
-    )
-}
 
 @ExperimentalHorologistApi
 @Composable

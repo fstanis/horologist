@@ -16,10 +16,8 @@
 
 package com.google.android.horologist.media.ui.components
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.painterResource
 import com.google.android.horologist.images.base.paintable.DrawableResPaintable
-import com.google.android.horologist.images.base.paintable.Paintable
+import com.google.android.horologist.images.base.paintable.DrawableResPaintableIcon
 import com.google.android.horologist.logo.R
 import com.google.android.horologist.media.ui.components.animated.MarqueeTextMediaDisplay
 import com.google.android.horologist.screenshots.ScreenshotBaseTest
@@ -44,7 +42,7 @@ class MarqueeTextMediaDisplayTest : ScreenshotBaseTest(
             MarqueeTextMediaDisplay(
                 title = "Sorrow",
                 artist = "David Bowie",
-                titleIcon = DrawableResPaintable(R.drawable.ic_stat_horologist),
+                titleIcon = DrawableResPaintableIcon(R.drawable.ic_stat_horologist),
             )
         }
     }
@@ -55,10 +53,7 @@ class MarqueeTextMediaDisplayTest : ScreenshotBaseTest(
             MarqueeTextMediaDisplay(
                 title = "Sorrow",
                 artist = "David Bowie",
-                titleIcon = object : Paintable {
-                    @Composable
-                    override fun rememberPainter() = painterResource(id = R.drawable.horologist_logo)
-                },
+                titleIcon = DrawableResPaintable(R.drawable.horologist_logo),
             )
         }
     }

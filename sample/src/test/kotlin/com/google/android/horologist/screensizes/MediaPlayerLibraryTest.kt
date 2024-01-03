@@ -35,6 +35,7 @@ import com.google.android.horologist.compose.layout.ScalingLazyColumnDefaults
 import com.google.android.horologist.compose.layout.scrollAway
 import com.google.android.horologist.compose.pager.PagerScreen
 import com.google.android.horologist.compose.tools.Device
+import com.google.android.horologist.images.base.paintable.UriPaintable
 import com.google.android.horologist.images.base.util.rememberVectorPainter
 import com.google.android.horologist.media.ui.screens.entity.PlaylistDownloadScreen
 import com.google.android.horologist.media.ui.screens.entity.createPlaylistDownloadScreenStateLoaded
@@ -49,6 +50,7 @@ class MediaPlayerLibraryTest(device: Device) : ScreenSizeTest(device = device, s
         val playlistUiModel = PlaylistUiModel(
             id = "id",
             title = "Playlist name",
+            artwork = null,
         )
 
         val notDownloaded = listOf(
@@ -56,13 +58,13 @@ class MediaPlayerLibraryTest(device: Device) : ScreenSizeTest(device = device, s
                 id = "id",
                 title = "Song name",
                 artist = "Artist name",
-                artworkUri = "artworkUri",
+                artwork = UriPaintable("artworkUri"),
             ),
             DownloadMediaUiModel.NotDownloaded(
                 id = "id 2",
                 title = "Song name 2",
                 artist = "Artist name 2",
-                artworkUri = "artworkUri",
+                artwork = UriPaintable("artworkUri"),
             ),
         )
 

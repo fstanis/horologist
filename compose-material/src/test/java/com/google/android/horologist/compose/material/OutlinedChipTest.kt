@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.ChipDefaults
 import com.google.accompanist.testharness.TestHarness
-import com.google.android.horologist.images.base.paintable.DrawableResPaintable
+import com.google.android.horologist.images.base.paintable.DrawableResPaintableIcon
 import com.google.android.horologist.images.base.paintable.ImageVectorPaintable.Companion.asPaintable
 import com.google.android.horologist.screenshots.ScreenshotBaseTest
 import org.junit.Test
@@ -223,7 +223,7 @@ class OutlinedChipTest : ScreenshotBaseTest() {
             OutlinedChip(
                 label = "Primary label",
                 onClick = { },
-                icon = DrawableResPaintable(android.R.drawable.ic_delete),
+                icon = DrawableResPaintableIcon(android.R.drawable.ic_delete),
             )
         }
     }

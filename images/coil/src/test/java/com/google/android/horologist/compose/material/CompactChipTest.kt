@@ -22,8 +22,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.wear.compose.material.MaterialTheme
+import com.google.android.horologist.images.base.paintable.UriPaintable
 import com.google.android.horologist.images.base.util.rememberVectorPainter
-import com.google.android.horologist.images.coil.CoilPaintable
 import com.google.android.horologist.images.coil.FakeImageLoader
 import com.google.android.horologist.screenshots.ScreenshotBaseTest
 import org.junit.Test
@@ -40,12 +40,14 @@ class CompactChipTest : ScreenshotBaseTest() {
                 CompactChip(
                     label = "Primary label",
                     onClick = { },
-                    icon = CoilPaintable(
+                    icon = UriPaintable(
                         "iconUri",
-                        placeholder = rememberVectorPainter(
-                            image = Icons.Filled.Image,
-                            tintColor = Color.Black,
-                        ),
+                        placeholder = {
+                            rememberVectorPainter(
+                                image = Icons.Filled.Image,
+                                tintColor = Color.Black,
+                            )
+                        },
                     ),
                 )
             }
@@ -64,12 +66,14 @@ class CompactChipTest : ScreenshotBaseTest() {
                 CompactChip(
                     label = "Primary label",
                     onClick = { },
-                    icon = CoilPaintable(
+                    icon = UriPaintable(
                         "iconUri",
-                        placeholder = rememberVectorPainter(
-                            image = Icons.Default.Image,
-                            tintColor = MaterialTheme.colors.primary,
-                        ),
+                        placeholder = {
+                            rememberVectorPainter(
+                                image = Icons.Default.Image,
+                                tintColor = MaterialTheme.colors.primary,
+                            )
+                        },
                     ),
                     enabled = false,
                 )

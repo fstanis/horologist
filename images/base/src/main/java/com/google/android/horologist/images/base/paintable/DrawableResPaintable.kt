@@ -25,7 +25,7 @@ import androidx.compose.ui.res.painterResource
 @JvmInline
 public value class DrawableResPaintable(
     @DrawableRes private val id: Int,
-) : PaintableIcon {
+) : Paintable {
 
     @Composable
     override fun rememberPainter(): Painter = painterResource(id = id)

@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.wear.compose.ui.tooling.preview.WearPreviewDevices
 import com.google.android.horologist.compose.layout.belowTimeTextPreview
+import com.google.android.horologist.images.base.paintable.UriPaintable
 import com.google.android.horologist.images.base.util.rememberVectorPainter
 import com.google.android.horologist.media.ui.state.model.PlaylistDownloadUiModel
 import com.google.android.horologist.media.ui.state.model.PlaylistUiModel
@@ -32,15 +33,11 @@ import com.google.android.horologist.media.ui.uamp.UampTheme
 fun PlaylistDownloadBrowseScreenPreview() {
     PlaylistDownloadBrowseScreen(
         columnState = belowTimeTextPreview(),
-        browseScreenState = BrowseScreenState.Loaded(downloadList),
+        browseScreenState = BrowseScreenState.Loaded(downloadList()),
         onDownloadItemClick = { },
         onDownloadItemInProgressClick = { },
         onPlaylistsClick = { },
         onSettingsClick = { },
-        downloadItemArtworkPlaceholder = rememberVectorPainter(
-            image = Icons.AutoMirrored.Default.FeaturedPlayList,
-            tintColor = Color.Green,
-        ),
     )
 }
 
@@ -76,26 +73,31 @@ fun PlaylistDownloadBrowseScreenPreviewUampTheme() {
     UampTheme {
         PlaylistDownloadBrowseScreen(
             columnState = belowTimeTextPreview(),
-            browseScreenState = BrowseScreenState.Loaded(downloadList),
+            browseScreenState = BrowseScreenState.Loaded(downloadList()),
             onDownloadItemClick = { },
             onDownloadItemInProgressClick = { },
             onPlaylistsClick = { },
             onSettingsClick = { },
-            downloadItemArtworkPlaceholder = rememberVectorPainter(
-                image = Icons.AutoMirrored.Default.FeaturedPlayList,
-                tintColor = Color.Green,
-            ),
         )
     }
 }
 
-private val downloadList = buildList {
+@Composable
+private fun downloadList() = buildList {
     add(
         PlaylistDownloadUiModel.InProgress(
             PlaylistUiModel(
                 id = "id",
                 title = "Rock Classics",
-                artworkUri = "https://www.example.com/album1.png",
+                artwork = UriPaintable(
+                    "https://www.example.com/album1.png",
+                    {
+                        rememberVectorPainter(
+                            image = Icons.AutoMirrored.Default.FeaturedPlayList,
+                            tintColor = Color.Green,
+                        )
+                    },
+                ),
             ),
             percentage = 15,
         ),
@@ -106,7 +108,15 @@ private val downloadList = buildList {
             PlaylistUiModel(
                 id = "id",
                 title = "Pop Punk",
-                artworkUri = "https://www.example.com/album2.png",
+                artwork = UriPaintable(
+                    "https://www.example.com/album2.png",
+                    {
+                        rememberVectorPainter(
+                            image = Icons.AutoMirrored.Default.FeaturedPlayList,
+                            tintColor = Color.Green,
+                        )
+                    },
+                ),
             ),
         ),
     )

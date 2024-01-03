@@ -61,7 +61,7 @@ import com.google.android.horologist.compose.material.ButtonSize
 import com.google.android.horologist.compose.material.Chip
 import com.google.android.horologist.compose.material.ChipIconWithProgress
 import com.google.android.horologist.images.base.paintable.ImageVectorPaintable.Companion.asPaintable
-import com.google.android.horologist.images.coil.CoilPaintable
+import com.google.android.horologist.images.base.paintable.Paintable
 import com.google.android.horologist.media.ui.R
 import com.google.android.horologist.media.ui.screens.entity.PlaylistDownloadScreenState.Loaded.DownloadsProgress
 import com.google.android.horologist.media.ui.state.model.DownloadMediaUiModel
@@ -181,7 +181,7 @@ private fun MediaContent(
                 label = mediaTitle,
                 onClick = { onDownloadItemClick(downloadMediaUiModel) },
                 secondaryLabel = secondaryLabel,
-                icon = CoilPaintable(downloadMediaUiModel.artworkUri, downloadItemArtworkPlaceholder),
+                icon = downloadMediaUiModel.artwork ?: downloadItemArtworkPlaceholder?.let { Paintable { it } },
                 largeIcon = true,
                 colors = ChipDefaults.secondaryChipColors(),
                 enabled = downloadMediaUiModel !is DownloadMediaUiModel.NotDownloaded,
@@ -201,7 +201,7 @@ private fun MediaContent(
                             ChipIconWithProgress(
                                 progress = progress,
                                 modifier = Modifier.clearAndSetSemantics { },
-                                icon = CoilPaintable(downloadMediaUiModel.artworkUri, downloadItemArtworkPlaceholder),
+                                icon = downloadMediaUiModel.artwork ?: downloadItemArtworkPlaceholder?.let { Paintable { it } },
                                 largeIcon = true,
                             )
                         }
@@ -211,7 +211,7 @@ private fun MediaContent(
                         {
                             ChipIconWithProgress(
                                 modifier = Modifier.clearAndSetSemantics { },
-                                icon = CoilPaintable(downloadMediaUiModel.artworkUri, downloadItemArtworkPlaceholder),
+                                icon = downloadMediaUiModel.artwork ?: downloadItemArtworkPlaceholder?.let { Paintable { it } },
                                 largeIcon = true,
                             )
                         }

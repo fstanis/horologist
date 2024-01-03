@@ -75,6 +75,7 @@ fun MediaPlayerTestCase() {
             id = "",
             title = "Four Seasons In One Day",
             subtitle = "Crowded House",
+            artwork = null,
         ),
         trackPositionUiModel = TrackPositionUiModel.Actual(
             percent = 0.1f,

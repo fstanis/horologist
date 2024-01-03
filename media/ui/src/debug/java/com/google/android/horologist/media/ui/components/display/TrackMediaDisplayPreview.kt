@@ -29,6 +29,7 @@ fun TrackMediaDisplayPreview() {
             id = "id",
             title = "Song title",
             subtitle = "Artist name",
+            artwork = null,
         ),
     )
 }
@@ -45,6 +46,7 @@ fun TrackMediaDisplayPreviewLongText() {
             id = "id",
             title = "I Predict That You Look Good In A Riot",
             subtitle = "Arctic Monkeys feat Kaiser Chiefs",
+            artwork = null,
         ),
     )
 }

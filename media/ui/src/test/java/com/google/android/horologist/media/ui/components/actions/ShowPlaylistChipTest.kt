@@ -16,7 +16,7 @@
 
 package com.google.android.horologist.media.ui.components.actions
 
-import com.google.android.horologist.images.base.paintable.DrawableResPaintable
+import com.google.android.horologist.images.base.paintable.DrawableResPaintableIcon
 import com.google.android.horologist.logo.R
 import com.google.android.horologist.screenshots.ScreenshotBaseTest
 import org.junit.Test
@@ -27,7 +27,7 @@ class ShowPlaylistChipTest : ScreenshotBaseTest() {
     fun givenArtwork_thenDisplaysArtwork() {
         screenshotTestRule.setContent(isComponent = true, takeScreenshot = true) {
             ShowPlaylistChip(
-                artworkPaintable = DrawableResPaintable(R.drawable.horologist_logo),
+                artworkPaintable = DrawableResPaintableIcon(R.drawable.horologist_logo),
                 name = "Playlists",
                 onClick = {},
             )
@@ -49,7 +49,7 @@ class ShowPlaylistChipTest : ScreenshotBaseTest() {
     fun givenNOName_thenDoesDisplayArtwork() {
         screenshotTestRule.setContent(isComponent = true, takeScreenshot = true) {
             ShowPlaylistChip(
-                artworkPaintable = DrawableResPaintable(R.drawable.horologist_logo),
+                artworkPaintable = DrawableResPaintableIcon(R.drawable.horologist_logo),
                 name = null,
                 onClick = {},
             )
@@ -60,7 +60,7 @@ class ShowPlaylistChipTest : ScreenshotBaseTest() {
     fun givenVeryLongTitle_thenEllipsizeAt2ndLine() {
         screenshotTestRule.setContent(isComponent = true, takeScreenshot = true) {
             ShowPlaylistChip(
-                artworkPaintable = DrawableResPaintable(R.drawable.horologist_logo),
+                artworkPaintable = DrawableResPaintableIcon(R.drawable.horologist_logo),
                 name = "Very very very very very very very very very very very very very very very very very very very long title",
                 onClick = {},
             )
