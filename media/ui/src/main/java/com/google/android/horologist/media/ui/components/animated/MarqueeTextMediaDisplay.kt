@@ -26,10 +26,11 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.runtime.Composable
@@ -74,7 +75,7 @@ public fun MarqueeTextMediaDisplay(
             } + fadeOut(animationSpec = tween(delayMillis = delay))
     }
 
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(2.dp)) {
         AnimatedContent(
             targetState = title,
             transitionSpec = { getTransitionAnimation() },
@@ -85,7 +86,6 @@ public fun MarqueeTextMediaDisplay(
             val text = buildAnnotatedString {
                 if (titleIcon != null) {
                     appendInlineContent(id = "iconSlot")
-                    append(" ")
                 }
                 append(currentTitle.orEmpty())
             }
@@ -104,8 +104,7 @@ public fun MarqueeTextMediaDisplay(
                 text = text,
                 inlineContent = inlineContent,
                 modifier = Modifier
-                    .fillMaxWidth(0.7f)
-                    .padding(top = 2.dp, bottom = .8.dp),
+                    .fillMaxWidth(0.76f),
                 color = MaterialTheme.colors.onBackground,
                 style = textStyle,
                 textAlign = TextAlign.Center,
@@ -119,9 +118,6 @@ public fun MarqueeTextMediaDisplay(
         ) { currentArtist ->
             Text(
                 text = currentArtist.orEmpty(),
-                modifier = Modifier
-                    .fillMaxWidth(0.8f)
-                    .padding(top = 2.dp, bottom = .6.dp),
                 color = MaterialTheme.colors.onBackground,
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Ellipsis,
@@ -134,16 +130,17 @@ public fun MarqueeTextMediaDisplay(
 
 @Composable
 private fun MediaTitleIcon(icon: Paintable) {
+    val modifier = Modifier.size(16.dp).padding(end = 6.dp)
     if (icon is PaintableIcon) {
         Icon(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier,
             paintable = icon,
             contentDescription = null,
             tint = MaterialTheme.colors.onBackground,
         )
     } else {
         Image(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier,
             painter = icon.rememberPainter(),
             contentDescription = null,
             contentScale = ContentScale.FillHeight,

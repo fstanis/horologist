@@ -21,7 +21,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,16 +47,16 @@ public fun TextMediaDisplay(
     titleIcon: Paintable? = null,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(2.dp)) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(0.7f)
-                .padding(top = 2.dp, bottom = .8.dp)
+                .fillMaxWidth(0.76f)
                 .semantics(mergeDescendants = true) {},
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
         ) {
             if (titleIcon != null) {
                 Image(
+                    modifier = Modifier.size(16.dp),
                     painter = titleIcon.rememberPainter(),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
@@ -73,9 +73,6 @@ public fun TextMediaDisplay(
         }
         Text(
             text = subtitle,
-            modifier = Modifier
-                .fillMaxWidth(0.8f)
-                .padding(top = 2.dp, bottom = .6.dp),
             color = MaterialTheme.colors.onBackground,
             textAlign = TextAlign.Center,
             overflow = TextOverflow.Ellipsis,
